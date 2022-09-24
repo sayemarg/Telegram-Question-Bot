@@ -82,7 +82,7 @@ async def start_handler(event, database, user):
             break
 
     user = database.create_user(
-        chat_id=chat.id, full_name=full_name, phone=contact.phone_number
+        chat_id=chat.id, full_name=full_name, phone_number=contact.phone_number
     )
 
     database.commit()

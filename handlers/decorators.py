@@ -2,6 +2,7 @@ from .permissions import has_user_permission, is_user_programmer
 from database import DatabaseManager
 from helpers import PROGRAMMER_CHAT_ID, remove_file
 from messages.decorators import *
+from telethon import Button
 from traceback import format_exc
 
 
@@ -51,7 +52,9 @@ def handle_error_decorator(callback):
 def is_user_decorator(callback):
     async def inner(event, database, user):
         if not has_user_permission(user):
-            await event.respond(YOU_ARE_NOT_USER)
+            await event.respond(
+                YOU_ARE_NOT_USER, buttons=Button.clear()
+            )
             return
 
         await callback(event, database, user)
@@ -62,7 +65,9 @@ def is_user_decorator(callback):
 def is_admin_decorator(callback):
     async def inner(event, database, user):
         if not has_user_permission(user):
-            await event.respond(YOU_ARE_NOT_USER)
+            await event.respond(
+                YOU_ARE_NOT_USER, buttons=Button.clear()
+            )
             return
 
         is_programmer = is_user_programmer(user)
@@ -71,7 +76,9 @@ def is_admin_decorator(callback):
             (not is_programmer) and
             (not user.is_admin)
         ):
-            await event.respond(YOU_ARE_NOT_ADMIN)
+            await event.respond(
+                YOU_ARE_NOT_ADMIN, buttons=Button.clear()
+            )
             return
 
         await callback(event, database, user, is_programmer)
@@ -82,11 +89,15 @@ def is_admin_decorator(callback):
 def is_programmer_decorator(callback):
     async def inner(event, database, user):
         if not has_user_permission(user):
-            await event.respond(YOU_ARE_NOT_USER)
+            await event.respond(
+                YOU_ARE_NOT_USER, buttons=Button.clear()
+            )
             return
 
         if not is_user_programmer(user):
-            await event.respond(YOU_ARE_NOT_PROGRAMMER)
+            await event.respond(
+                YOU_ARE_NOT_PROGRAMMER, buttons=Button.clear()
+            )
             return
 
         await callback(event, database, user)

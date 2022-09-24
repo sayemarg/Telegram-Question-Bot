@@ -12,8 +12,9 @@ class Users(DeclarativeBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     chat_id = Column(Integer, unique=True)
     full_name = Column(String)
-    phone = Column(String, unique=True)
+    phone_number = Column(String, unique=True)
     active = Column(Boolean, default=True)
+    created_at = Column(DateTime, server_default=func.now())
 
     admin = relationship(
         "Admins", back_populates="user", uselist=False, cascade="all, delete"

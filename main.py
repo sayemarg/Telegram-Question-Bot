@@ -1,7 +1,7 @@
 from database import create_database_metadata
 from handlers import BOT_EVENT_HANDLERS
 from helpers import API_ID, API_HASH, BOT_TOKEN, create_path_if_not_exists
-from telethon.sync import TelegramClient, connection
+from telethon.sync import TelegramClient
 
 
 def create_required_dirs():
@@ -14,11 +14,7 @@ def main():
 
     create_database_metadata()
 
-    bot = TelegramClient(
-        "Bot", API_ID, API_HASH,
-        connection=connection.ConnectionTcpMTProxyRandomizedIntermediate,
-        proxy=("mjd.sabouni.co", 443, "dd00000000000000000000000000000000")
-    )
+    bot = TelegramClient("Bot", API_ID, API_HASH)
     bot.start(bot_token=BOT_TOKEN)
 
     for event_handler in BOT_EVENT_HANDLERS:

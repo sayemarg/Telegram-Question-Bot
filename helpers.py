@@ -8,7 +8,7 @@ API_HASH = getenv("API_HASH")
 
 BOT_TOKEN = getenv("BOT_TOKEN")
 
-PROGRAMMER_CHAT_ID = getenv("PROGRAMMER_CHAT_ID")
+PROGRAMMER_CHAT_ID = int(getenv("PROGRAMMER_CHAT_ID"))
 
 
 def create_path_if_not_exists(file_name):
