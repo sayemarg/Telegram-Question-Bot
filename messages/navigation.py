@@ -6,6 +6,6 @@ ADD_LESSON_KEY = "افزودن درس 📖"
 
 LESSONS_LIST_KEY = "لیست درس ها 📝"
 
-ALL_QUESTIONS_LIST_KEY = "لیست همه پرس ها 📜"
+ALL_QUESTIONS_LIST_KEY = "لیست همه سوالات 📜"
 
 USERS_LIST_KEY = "لیست کاربران 👤"

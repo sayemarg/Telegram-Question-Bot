@@ -1,5 +1,6 @@
+from .constants import QuestionStatus
 from .engine import SessionMaker
-from .models import Users, Admins, Lessons
+from .models import Users, Admins, Lessons, Questions
 
 
 class DatabaseManager:
@@ -30,6 +31,11 @@ class DatabaseManager:
         self.add(admin)
         return admin
 
+    def get_admins_list(self, **filters):
+        return self.session.query(Admins).filter_by(
+            **filters
+        ).all()
+
     def create_lesson(self, **fields):
         lesson = Lessons(**fields)
         self.add(lesson)
@@ -37,6 +43,9 @@ class DatabaseManager:
 
     def get_lesson(self, **filters):
         return self.__get_lessons(**filters).first()
+
+    def get_lessons_list(self, **filters):
+        return self.__get_lessons(**filters).all()
 
     def get_lessons_count(self, **filters):
         return self.__get_lessons(**filters).count()
@@ -48,6 +57,26 @@ class DatabaseManager:
         return self.session.query(Lessons).filter_by(
             **filters
         ).order_by(Lessons.id)
+
+    def create_question(self, **fields):
+        question = Questions(**fields)
+        self.add(question)
+        return question
+
+    def get_question(self, **filters):
+        return self.__get_questions(**filters).first()
+
+    def get_questions_count(self, **filters):
+        return self.__get_questions(**filters).count()
+
+    def get_questions_in_range(self, start, end, **filters):
+        return self.__get_questions(**filters)[start:end]
+
+    def __get_questions(self, **filters):
+        return self.session.query(Questions).filter_by(**filters).filter(
+            Questions.status != QuestionStatus.CANCELED,
+            Questions.status != QuestionStatus.REMOVED,
+        ).order_by(Questions.id.desc())
 
     def add(self, model):
         self.session.add(model)
