@@ -1,5 +1,5 @@
 from .engine import SessionMaker
-from .models import Users, Admins
+from .models import Users, Admins, Lessons
 
 
 class DatabaseManager:
@@ -29,6 +29,25 @@ class DatabaseManager:
         admin = Admins(**fields)
         self.add(admin)
         return admin
+
+    def create_lesson(self, **fields):
+        lesson = Lessons(**fields)
+        self.add(lesson)
+        return lesson
+
+    def get_lesson(self, **filters):
+        return self.__get_lessons(**filters).first()
+
+    def get_lessons_count(self, **filters):
+        return self.__get_lessons(**filters).count()
+
+    def get_lessons_in_range(self, start, end, **filters):
+        return self.__get_lessons(**filters)[start:end]
+
+    def __get_lessons(self, **filters):
+        return self.session.query(Lessons).filter_by(
+            **filters
+        ).order_by(Lessons.id)
 
     def add(self, model):
         self.session.add(model)

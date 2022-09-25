@@ -23,11 +23,8 @@ async def user_detail_handler(event, database, user, is_programmer):
         await event.respond(USER_NOT_FOUND)
         return
 
-    user_message, user_buttons = generate_user_message_and_buttons(
+    message, buttons = generate_user_message_and_buttons(
         target_user, is_programmer
     )
 
-    await event.respond(
-        user_message,
-        buttons=user_buttons
-    )
+    await event.respond(message, buttons=buttons)
