@@ -14,6 +14,7 @@ from .shared.main_menu import main_menu_handler
 from .shared.question_detail import question_detail_handler
 from .shared.start import start_handler
 from .users.add_question import add_question_handler
+from .users.attach_file import attach_file_handler
 from .users.my_questions import my_questions_list_handler
 
 
@@ -22,6 +23,7 @@ BOT_EVENT_HANDLERS = [
     add_lesson_handler,
     add_question_handler,
     all_questions_list_handler,
+    attach_file_handler,
     deactivate_user_handler,
     delete_lesson_handler,
     delete_question_handler,

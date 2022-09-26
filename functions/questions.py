@@ -30,7 +30,7 @@ def generate_question_message_and_buttons(question, user, is_admin):
 
     second_row_buttons = [
         Button.inline(
-            QUESTION_FILES_BUTTON, f"/question_attachments_{question.id}"
+            QUESTION_FILES_BUTTON, f"/show_attachments_{question.id}"
         )
     ]
 

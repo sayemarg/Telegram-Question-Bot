@@ -1,6 +1,6 @@
 from .constants import QuestionStatus
 from .engine import SessionMaker
-from .models import Users, Admins, Lessons, Questions
+from .models import Users, Admins, Lessons, Questions, Attachments
 
 
 class DatabaseManager:
@@ -77,6 +77,11 @@ class DatabaseManager:
             Questions.status != QuestionStatus.CANCELED,
             Questions.status != QuestionStatus.REMOVED,
         ).order_by(Questions.id.desc())
+
+    def create_attachment(self, **fields):
+        attachment = Attachments(**fields)
+        self.add(attachment)
+        return attachment
 
     def add(self, model):
         self.session.add(model)
