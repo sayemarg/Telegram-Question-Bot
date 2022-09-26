@@ -59,3 +59,11 @@ def generate_question_message_and_buttons(question, user, is_admin):
         question.text,
         QuestionStatusText[question.status]
     ), buttons
+
+
+async def update_question_message(event, question, user, is_admin=True):
+    message, buttons = generate_question_message_and_buttons(
+        question, user, is_admin
+    )
+
+    await event.edit(message, buttons=buttons)

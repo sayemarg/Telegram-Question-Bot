@@ -28,10 +28,10 @@ async def main_menu_handler(event, database, user):
                 Button.text(LESSONS_LIST_KEY, resize=True, single_use=True),
             ],
             [
+                Button.text(USERS_LIST_KEY, resize=True, single_use=True),
                 Button.text(
                     ALL_QUESTIONS_LIST_KEY, resize=True, single_use=True
                 ),
-                Button.text(USERS_LIST_KEY, resize=True, single_use=True),
             ]
         ]
 
