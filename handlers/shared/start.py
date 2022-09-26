@@ -1,5 +1,6 @@
 from ..constants import FULL_NAME_MAX_LENGTH
 from ..decorators import handle_error_decorator
+from ..permissions import is_user_programmer
 from helpers import create_path_if_not_exists
 from messages.shared.start import *
 from telethon import events, Button
@@ -84,6 +85,9 @@ async def start_handler(event, database, user):
     user = database.create_user(
         chat_id=chat.id, full_name=full_name, phone_number=contact.phone_number
     )
+
+    if is_user_programmer(user):
+        database.create_admin(user=user)
 
     database.commit()
 

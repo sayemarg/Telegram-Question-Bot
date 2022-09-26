@@ -8,11 +8,15 @@ from messages.shared.question_detail import (
 from telethon import Button
 
 
+def format_question_lesson_name(question):
+    return question.lesson.title if question.lesson else DELETED_LESSON_TITLE
+
+
 def format_question_preview_function(counter, question): return (
     counter,
     question.id,
     question.title,
-    question.lesson.title if question.lesson else DELETED_LESSON_TITLE,
+    format_question_lesson_name(question),
     QuestionStatusText[question.status]
 )
 
@@ -51,7 +55,7 @@ def generate_question_message_and_buttons(question, user, is_admin):
     return QUESTION_DETAIL_TEXT.format(
         question.title,
         question.user.full_name,
-        question.lesson.title if question.lesson else DELETED_LESSON_TITLE,
+        format_question_lesson_name(question),
         question.text,
         QuestionStatusText[question.status]
     ), buttons

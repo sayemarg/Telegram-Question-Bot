@@ -69,16 +69,16 @@ class Questions(DeclarativeBase):
     user_id = Column(ForeignKey("users.id", ondelete="CASCADE"))
     user = relationship("Users", back_populates="questions")
 
-    files = relationship(
-        "Files", back_populates="question", cascade="all, delete"
+    attachments = relationship(
+        "Attachments", back_populates="question", cascade="all, delete"
     )
 
 
-class Files(DeclarativeBase):
-    __tablename__ = "files"
+class Attachments(DeclarativeBase):
+    __tablename__ = "attachments"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     path = Column(String)
 
     question_id = Column(ForeignKey("questions.id", ondelete="CASCADE"))
-    question = relationship("Questions", back_populates="files")
+    question = relationship("Questions", back_populates="attachments")
