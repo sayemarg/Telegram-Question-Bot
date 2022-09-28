@@ -83,6 +83,17 @@ class DatabaseManager:
         self.add(attachment)
         return attachment
 
+    def get_attachments_count(self, **filters):
+        return self.__get_attachments(**filters).count()
+
+    def get_attachments_list(self, **filters):
+        return self.__get_attachments(**filters).all()
+
+    def __get_attachments(self, **filters):
+        return self.session.query(Attachments).filter_by(
+            **filters
+        ).order_by(Attachments.id)
+
     def add(self, model):
         self.session.add(model)
 

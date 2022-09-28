@@ -13,6 +13,7 @@ from .admins.users_list import users_list_handler
 from .shared.delete_question import delete_question_handler
 from .shared.main_menu import main_menu_handler
 from .shared.question_detail import question_detail_handler
+from .shared.show_attachments import show_attachments_handler
 from .shared.start import start_handler
 from .users.add_question import add_question_handler
 from .users.attach_file import attach_file_handler
@@ -35,6 +36,7 @@ BOT_EVENT_HANDLERS = [
     main_menu_handler,
     my_questions_list_handler,
     question_detail_handler,
+    show_attachments_handler,
     start_handler,
     upgrade_user_handler,
     user_detail_handler,

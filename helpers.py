@@ -23,3 +23,7 @@ def remove_file(file_path):
         return
 
     remove(file_path)
+
+
+def path_exists(file_path):
+    return path.exists(file_path)
