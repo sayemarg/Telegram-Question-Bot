@@ -1,4 +1,4 @@
-LESSON_DETAIL_TEXT = "عنوان: **{}**"
+LESSON_DETAIL_TEXT = "**{}**"
 
 DELETE_LESSON_BUTTON = "حذف کردن 🗑️"
 

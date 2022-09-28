@@ -5,6 +5,7 @@ from .admins.deactivate_user import deactivate_user_handler
 from .admins.delete_lesson import delete_lesson_handler
 from .admins.downgrade_admin import downgrade_admin_handler
 from .admins.lesson_detail import lesson_detail_handler
+from .admins.lesson_questions import lesson_questions_handler
 from .admins.lessons_list import lessons_list_handler
 from .admins.questions_list import all_questions_list_handler
 from .admins.upgrade_user import upgrade_user_handler
@@ -34,6 +35,7 @@ BOT_EVENT_HANDLERS = [
     delete_question_handler,
     downgrade_admin_handler,
     lesson_detail_handler,
+    lesson_questions_handler,
     lessons_list_handler,
     main_menu_handler,
     my_questions_list_handler,

@@ -49,6 +49,8 @@ async def delete_question_handler(event, database, user):
     for attachment in question.attachments:
         remove_file(attachment.path)
 
+        database.delete(attachment)
+
     database.commit()
 
     await event.delete()
