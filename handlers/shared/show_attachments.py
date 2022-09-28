@@ -38,7 +38,7 @@ async def show_attachments_handler(event, database, user):
         if not path_exists(file_path):
             continue
 
-        await event.respond(
+        await event.reply(
             file=file_path,
             buttons=Button.inline(
                 DELETE_ATTACHMENT_BUTTON, f"/delete_attachment_{attachment.id}"

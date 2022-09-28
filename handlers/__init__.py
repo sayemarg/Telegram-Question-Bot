@@ -10,6 +10,7 @@ from .admins.questions_list import all_questions_list_handler
 from .admins.upgrade_user import upgrade_user_handler
 from .admins.user_detail import user_detail_handler
 from .admins.users_list import users_list_handler
+from .shared.delete_attachment import delete_attachment_handler
 from .shared.delete_question import delete_question_handler
 from .shared.main_menu import main_menu_handler
 from .shared.question_detail import question_detail_handler
@@ -28,6 +29,7 @@ BOT_EVENT_HANDLERS = [
     answer_question_handler,
     attach_file_handler,
     deactivate_user_handler,
+    delete_attachment_handler,
     delete_lesson_handler,
     delete_question_handler,
     downgrade_admin_handler,

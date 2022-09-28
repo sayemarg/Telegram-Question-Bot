@@ -53,10 +53,6 @@ async def answer_question_handler(event, database, user, is_programmer):
                 await conversation.send_message(ANSWER_NUMBERS_LIMIT)
                 break
 
-    wait_message = await event.respond(
-        WAIT_FOR_SEND_ANSWERS, buttons=Button.clear()
-    )
-
     user_chat_id = question.user.chat_id
 
     await event.client.send_message(
@@ -78,6 +74,6 @@ async def answer_question_handler(event, database, user, is_programmer):
 
         await update_question_message(event, question, user)
 
-    await wait_message.delete()
-
-    await event.respond(SEND_ANSWER_SUCCESSFUL)
+    await event.respond(
+        SEND_ANSWER_SUCCESSFUL, buttons=Button.clear()
+    )

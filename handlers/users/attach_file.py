@@ -1,4 +1,7 @@
-from ..constants import PICTURE_MAX_SIZE, VIDEO_MAX_SIZE, SOUND_MAX_SIZE
+from ..constants import (
+    QUESTION_ATTACHMENT_MAX_NUMBER, PICTURE_MAX_SIZE, VIDEO_MAX_SIZE,
+    SOUND_MAX_SIZE
+)
 from ..decorators import handle_error_decorator, is_user_decorator
 from messages.globals.questions import QUESTION_NOT_FOUND
 from messages.users.attach_file import *
@@ -17,6 +20,14 @@ async def attach_file_handler(event, database, user):
 
     if not question:
         await event.respond(QUESTION_NOT_FOUND)
+        return
+
+    attachment_count = database.get_attachments_count(question=question)
+
+    if QUESTION_ATTACHMENT_MAX_NUMBER <= attachment_count:
+        await event.respond(
+            MAX_ATTACHMENT_NUMBER.format(QUESTION_ATTACHMENT_MAX_NUMBER)
+        )
         return
 
     await event.answer()

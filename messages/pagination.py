@@ -5,7 +5,7 @@ PAGINATION_LIST_MESSAGE = """
 """
 
 LIST_DELIMETER = """
-〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️
+〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️
 """
 
 PAGE_DOES_NOT_EXISTS = """

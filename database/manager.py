@@ -83,6 +83,9 @@ class DatabaseManager:
         self.add(attachment)
         return attachment
 
+    def get_attachment(self, **filters):
+        return self.__get_attachments(**filters).first()
+
     def get_attachments_count(self, **filters):
         return self.__get_attachments(**filters).count()
 
