@@ -20,6 +20,7 @@ async def answer_question_handler(event, database, user, is_programmer):
     question = database.get_question(id=question_id)
 
     if not question:
+        await event.delete()
         await event.respond(QUESTION_NOT_FOUND)
         return
 

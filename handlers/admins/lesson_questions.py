@@ -20,6 +20,7 @@ async def lesson_questions_handler(event, database, user, is_programmer):
     lesson = database.get_lesson(id=lesson_id)
 
     if not lesson:
+        await event.delete()
         await event.respond(LESSON_NOT_FOUND)
         return
 

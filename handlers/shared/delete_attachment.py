@@ -74,6 +74,7 @@ async def delete_attachment_handler(event, database, user):
     attachment = database.get_attachment(id=attachment_id)
 
     if not attachment:
+        await event.delete()
         await event.respond(ATTACHMENT_NOT_FOUND)
         return
 

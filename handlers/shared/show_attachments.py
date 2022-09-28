@@ -23,6 +23,7 @@ async def show_attachments_handler(event, database, user):
         question = database.get_question(id=question_id, user=user)
 
     if not question:
+        await event.delete()
         await event.respond(QUESTION_NOT_FOUND)
         return
 
