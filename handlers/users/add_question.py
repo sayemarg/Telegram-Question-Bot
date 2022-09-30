@@ -13,7 +13,7 @@ from telethon import events, Button
 @events.register(
     events.NewMessage(pattern=f"^{NEW_QUESTION_KEY}$", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_user_decorator
 async def add_question_handler(event, databse, user):
     lessons = databse.get_lessons_list()

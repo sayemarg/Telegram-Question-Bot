@@ -9,7 +9,7 @@ from telethon import events, Button
 @events.register(
     events.NewMessage(pattern="^/start$", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator()
 async def start_handler(event, database, user):
     chat = await event.get_chat()
 

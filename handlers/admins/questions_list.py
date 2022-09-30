@@ -15,7 +15,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern=f"^{ALL_QUESTIONS_LIST_KEY}$", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_admin_decorator
 async def all_questions_list_handler(event, database, user, is_programmer):
     questions_count = database.get_questions_count()

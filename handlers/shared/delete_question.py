@@ -12,7 +12,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern=f"/delete_question_(\d+)")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_user_decorator
 async def delete_question_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

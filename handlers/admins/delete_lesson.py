@@ -8,7 +8,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/delete_lesson_(\d+)$")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_programmer_decorator
 async def delete_lesson_handler(event, database, user):
     lesson_id = int(event.pattern_match.group(1))

@@ -11,7 +11,7 @@ from telethon import events, Button
 @events.register(
     events.NewMessage(pattern="^/main_menu$", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_user_decorator
 async def main_menu_handler(event, database, user):
     buttons = [

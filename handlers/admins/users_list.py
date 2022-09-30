@@ -14,7 +14,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern=f"^{USERS_LIST_KEY}$", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_admin_decorator
 async def users_list_handler(event, database, user, is_programmer):
     users_count = database.get_users_count()

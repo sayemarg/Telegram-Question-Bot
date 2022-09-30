@@ -12,7 +12,7 @@ from telethon import events
 @events.register(
     events.CallbackQuery(pattern=f"/lesson_questions_(\d+)_(\d+)")
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_admin_decorator
 async def lesson_questions_handler(event, database, user, is_programmer):
     lesson_id = int(event.pattern_match.group(1))

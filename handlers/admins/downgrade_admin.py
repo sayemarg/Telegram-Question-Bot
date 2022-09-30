@@ -10,7 +10,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/downgrade_admin_(\d+)$")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_programmer_decorator
 async def downgrade_admin_handler(event, database, user):
     user_id = int(event.pattern_match.group(1))

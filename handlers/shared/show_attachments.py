@@ -9,7 +9,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern=f"/show_attachments_(\d+)")
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_user_decorator
 async def show_attachments_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

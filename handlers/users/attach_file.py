@@ -11,7 +11,7 @@ from telethon import events
 @events.register(
     events.CallbackQuery(pattern=f"/attach_file_(\d+)")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_user_decorator
 async def attach_file_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

@@ -10,7 +10,7 @@ from telethon import events
 @events.register(
     events.CallbackQuery(pattern="^/activate_user_(\d+)$")
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_admin_decorator
 async def activate_user_handler(event, database, user, is_programmer):
     user_id = int(event.pattern_match.group(1))

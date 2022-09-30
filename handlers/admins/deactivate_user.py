@@ -12,7 +12,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/deactivate_user_(\d+)$")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_admin_decorator
 async def deactivate_user_handler(event, database, user, is_programmer):
     user_id = int(event.pattern_match.group(1))

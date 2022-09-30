@@ -8,7 +8,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern="/user_detail_(\d+)", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator(protect_conversation=False)
 @is_admin_decorator
 async def user_detail_handler(event, database, user, is_programmer):
     user_id = int(event.pattern_match.group(1))

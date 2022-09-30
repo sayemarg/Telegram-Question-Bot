@@ -66,7 +66,7 @@ async def delete_attachment_by_user(event, database, attachment):
 @events.register(
     events.CallbackQuery(pattern=f"/delete_attachment_(\d+)")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_user_decorator
 async def delete_attachment_handler(event, database, user):
     attachment_id = int(event.pattern_match.group(1))

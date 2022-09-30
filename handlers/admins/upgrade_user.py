@@ -9,7 +9,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/upgrade_user_(\d+)$")
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_programmer_decorator
 async def upgrade_user_handler(event, database, user):
     user_id = int(event.pattern_match.group(1))

@@ -9,7 +9,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern=f"^{ADD_LESSON_KEY}$", incoming=True)
 )
-@handle_error_decorator
+@handle_error_decorator()
 @is_admin_decorator
 async def add_lesson_handler(event, database, user, is_programmer):
     async with event.client.conversation(
