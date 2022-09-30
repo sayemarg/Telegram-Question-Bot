@@ -1,4 +1,6 @@
+from .constants import CONVERSATION_TIMEOUT
 from .permissions import has_user_permission, is_user_programmer
+from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from database import DatabaseManager
 from helpers import PROGRAMMER_CHAT_ID, remove_file
 from messages.decorators import *
@@ -25,6 +27,15 @@ def handle_error_decorator(callback):
             user = database.get_user(chat_id=event.chat_id)
 
             await callback(event, database, user)
+
+        except AsyncioTimeoutError:
+            timeout_minutes = CONVERSATION_TIMEOUT // 60
+
+            await event.respond(
+                CONVERSATION_TIMEOUT_EXCEEDED.format(
+                    timeout_minutes
+                )
+            )
 
         except:
             await event.respond(BOT_ERROR_OCCURED)
