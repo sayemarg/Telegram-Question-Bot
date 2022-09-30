@@ -1,3 +1,4 @@
+from handlers.constants import CONVERSATION_TIMEOUT
 from math import ceil
 from messages.globals import CHOOSE_FROM_BUTTONS, SKIP_BUTTON, REASON_LENGTH_LIMIT
 from messages.pagination import *
@@ -7,7 +8,9 @@ from telethon import Button
 async def get_user_confirm(
     bot, chat_id, confirm_message, yes_button, no_button, cancel_message
 ):
-    async with bot.conversation(chat_id) as conversation:
+    async with bot.conversation(
+        chat_id, timeout=CONVERSATION_TIMEOUT
+    ) as conversation:
         await conversation.send_message(
             confirm_message,
             buttons=[
@@ -40,9 +43,9 @@ async def get_reason_from_user(
     bot, chat_id, send_reason_message, reason_max_length, cancel_message,
     not_empty_message, reason_skipped_message
 ):
-    provided_reason = None
-
-    async with bot.conversation(chat_id) as conversation:
+    async with bot.conversation(
+        chat_id, timeout=CONVERSATION_TIMEOUT
+    ) as conversation:
         await conversation.send_message(
             send_reason_message.format(reason_max_length),
             buttons=Button.text(SKIP_BUTTON, resize=True, single_use=True)

@@ -1,6 +1,6 @@
 from ..constants import (
-    QUESTION_ATTACHMENT_MAX_NUMBER, PICTURE_MAX_SIZE, VIDEO_MAX_SIZE,
-    SOUND_MAX_SIZE
+    CONVERSATION_TIMEOUT, QUESTION_ATTACHMENT_MAX_NUMBER, PICTURE_MAX_SIZE,
+    VIDEO_MAX_SIZE, SOUND_MAX_SIZE
 )
 from ..decorators import handle_error_decorator, is_user_decorator
 from messages.globals.questions import QUESTION_NOT_FOUND
@@ -33,7 +33,9 @@ async def attach_file_handler(event, database, user):
 
     await event.answer()
 
-    async with event.client.conversation(event.chat_id) as conversation:
+    async with event.client.conversation(
+        event.chat_id, timeout=CONVERSATION_TIMEOUT
+    ) as conversation:
         await conversation.send_message(
             SEND_FILE.format(PICTURE_MAX_SIZE, VIDEO_MAX_SIZE, SOUND_MAX_SIZE)
         )

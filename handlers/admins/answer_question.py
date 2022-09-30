@@ -28,7 +28,9 @@ async def answer_question_handler(event, database, user, is_programmer):
 
     answer_messages = []
 
-    async with event.client.conversation(event.chat_id, timeout=None) as conversation:
+    async with event.client.conversation(
+        event.chat_id, timeout=None
+    ) as conversation:
         await conversation.send_message(
             SEND_YOUR_ANSWERS.format(ANSWER_QUESTION_MAX_NUMBER),
             buttons=Button.text(

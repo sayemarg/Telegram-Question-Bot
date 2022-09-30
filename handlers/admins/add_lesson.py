@@ -1,4 +1,4 @@
-from ..constants import LESSON_TITLE_MAX_LENGTH
+from ..constants import CONVERSATION_TIMEOUT, LESSON_TITLE_MAX_LENGTH
 from ..decorators import handle_error_decorator, is_admin_decorator
 from functions.lessons import generate_lesson_message_and_buttons
 from messages.admins.add_lesson import *
@@ -12,7 +12,9 @@ from telethon import events
 @handle_error_decorator
 @is_admin_decorator
 async def add_lesson_handler(event, database, user, is_programmer):
-    async with event.client.conversation(event.chat_id) as conversation:
+    async with event.client.conversation(
+        event.chat_id, timeout=CONVERSATION_TIMEOUT
+    ) as conversation:
         await conversation.send_message(SEND_LESSON_TITLE)
 
         while True:

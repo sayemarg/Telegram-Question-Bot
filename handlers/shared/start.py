@@ -1,4 +1,4 @@
-from ..constants import FULL_NAME_MAX_LENGTH
+from ..constants import CONVERSATION_TIMEOUT, FULL_NAME_MAX_LENGTH
 from ..decorators import handle_error_decorator
 from ..permissions import is_user_programmer
 from helpers import create_path_if_not_exists
@@ -26,7 +26,9 @@ async def start_handler(event, database, user):
             await event.respond(ACCOUNT_DEACTIVATED)
             return
 
-    async with event.client.conversation(chat.id, timeout=None) as conversation:
+    async with event.client.conversation(
+        chat.id, timeout=CONVERSATION_TIMEOUT
+    ) as conversation:
         await conversation.send_message(SEND_FULL_NAME)
 
         while True:

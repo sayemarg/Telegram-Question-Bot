@@ -1,4 +1,6 @@
-from ..constants import QUESTION_TITLE_MAX_LENGTH, QUESTION_TEXT_MAX_LENGTH
+from ..constants import (
+    CONVERSATION_TIMEOUT, QUESTION_TITLE_MAX_LENGTH, QUESTION_TEXT_MAX_LENGTH
+)
 from ..decorators import handle_error_decorator, is_user_decorator
 from ..permissions import has_admins_permission
 from functions.questions import generate_question_message_and_buttons
@@ -31,7 +33,9 @@ async def add_question_handler(event, databse, user):
 
     select_event_match_pattern = f"{SELECT_LESSON_PREFIX}_(cancel|[1-9]\d*)"
 
-    async with event.client.conversation(event.chat_id) as conversation:
+    async with event.client.conversation(
+        event.chat_id, timeout=CONVERSATION_TIMEOUT
+    ) as conversation:
         select_message = await conversation.send_message(
             SELECT_LESSON, buttons=lesson_buttons
         )
@@ -46,19 +50,18 @@ async def add_question_handler(event, databse, user):
             )
         )
 
-    await user_select_event.delete()
+        await user_select_event.delete()
 
-    selected_lesson = match(
-        select_event_match_pattern, user_select_event.data.decode()
-    ).group(1)
+        selected_lesson = match(
+            select_event_match_pattern, user_select_event.data.decode()
+        ).group(1)
 
-    if selected_lesson == "cancel":
-        await event.respond(ADD_QUESTION_CANCELED)
-        return
+        if selected_lesson == "cancel":
+            await conversation.send_message(ADD_QUESTION_CANCELED)
+            return
 
-    lesson_id = int(selected_lesson)
+        lesson_id = int(selected_lesson)
 
-    async with event.client.conversation(event.chat_id) as conversation:
         await conversation.send_message(
             SEND_QUESTION_TITLE.format(QUESTION_TITLE_MAX_LENGTH)
         )
