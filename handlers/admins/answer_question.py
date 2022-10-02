@@ -37,9 +37,12 @@ async def answer_question_handler(event, database, user, is_programmer):
         event.chat_id, timeout=None
     ) as conversation:
         await conversation.send_message(
-            SEND_YOUR_ANSWERS.format(ANSWER_QUESTION_MAX_NUMBER),
+            SEND_YOUR_ANSWERS.format(
+                ANSWER_QUESTION_MAX_NUMBER,
+                SEND_ANSWER_DONE_BUTTON
+            ),
             buttons=Button.text(
-                SEND_ANSWER_DONE, resize=True, single_use=True
+                SEND_ANSWER_DONE_BUTTON, resize=True, single_use=True
             )
         )
 
@@ -53,7 +56,7 @@ async def answer_question_handler(event, database, user, is_programmer):
                 )
                 return
 
-            if response.raw_text == SEND_ANSWER_DONE:
+            if response.raw_text == SEND_ANSWER_DONE_BUTTON:
                 if not answer_messages:
                     await event.respond(
                         EMPTY_ANSWERS_LIST,
