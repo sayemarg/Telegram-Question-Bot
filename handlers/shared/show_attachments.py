@@ -39,13 +39,12 @@ async def show_attachments_handler(event, database, user):
             ids=attachment.message_id
         )
 
+        button = Button.inline(
+            DELETE_ATTACHMENT_BUTTON, f"/delete_attachment_{attachment.id}"
+        )
+
         if not message:
-            await event.reply(ATTACHMENT_DOSE_NOT_EXISTS)
+            await event.reply(ATTACHMENT_DOSE_NOT_EXISTS, buttons=button)
             continue
 
-        await event.reply(
-            message,
-            buttons=Button.inline(
-                DELETE_ATTACHMENT_BUTTON, f"/delete_attachment_{attachment.id}"
-            )
-        )
+        await event.reply(message, buttons=button)

@@ -69,7 +69,8 @@ async def start_handler(event, database, user):
 
             if response.raw_text == "/cancel":
                 await conversation.send_message(
-                    CANCEL_ACCESS_PROCESS, buttons=Button.clear()
+                    CANCEL_ACCESS_PROCESS,
+                    buttons=Button.clear()
                 )
                 conversation.cancel()
                 return
@@ -95,4 +96,7 @@ async def start_handler(event, database, user):
 
     database.commit()
 
-    await event.respond(ACCESS_GRANTED)
+    await event.respond(
+        ACCESS_GRANTED,
+        buttons=Button.clear()
+    )

@@ -8,7 +8,7 @@ from functions.globals import (
     get_user_confirm, send_message_to_user_even_is_blocked
 )
 from functions.questions import format_question_lesson_name
-from helpers import remove_file
+from helpers import FILES_CHANNEL_ID
 from messages.globals.questions import QUESTION_NOT_FOUND
 from messages.shared.delete_question import *
 from telethon import events, Button
@@ -53,14 +53,21 @@ async def delete_question_handler(event, database, user):
         is_user_question
     ) else QuestionStatus.REMOVED
 
+    message_ids = []
+
     for attachment in question.attachments:
-        remove_file(attachment.path)
+        message_ids.append(attachment.message_id)
 
         database.delete(attachment)
 
     database.commit()
 
     await event.delete()
+
+    await event.client.delete_messages(
+        FILES_CHANNEL_ID,
+        message_ids=message_ids
+    )
 
     if not is_user_question:
         await send_message_to_user_even_is_blocked(
