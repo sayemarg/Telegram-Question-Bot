@@ -24,6 +24,10 @@ class Users(DeclarativeBase):
         "Questions", back_populates="user", cascade="all, delete"
     )
 
+    attachments = relationship(
+        "Attachments", back_populates="user", cascade="all, delete"
+    )
+
     @property
     def is_admin(self):
         return bool(self.admin)
@@ -78,7 +82,10 @@ class Attachments(DeclarativeBase):
     __tablename__ = "attachments"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    path = Column(String)
+    message_id = Column(Integer)
 
     question_id = Column(ForeignKey("questions.id", ondelete="CASCADE"))
     question = relationship("Questions", back_populates="attachments")
+
+    user_id = Column(ForeignKey("users.id", ondelete="CASCADE"))
+    user = relationship("Users", back_populates="attachments")

@@ -6,6 +6,7 @@ from ..decorators import (
     conversation_protector_decorator, error_handler_decorator,
     is_user_decorator
 )
+from helpers import FILES_CHANNEL_ID
 from messages.globals.questions import QUESTION_NOT_FOUND
 from messages.users.attach_file import *
 from telethon import events
@@ -40,9 +41,7 @@ async def attach_file_handler(event, database, user):
     async with event.client.conversation(
         event.chat_id, timeout=CONVERSATION_TIMEOUT
     ) as conversation:
-        await conversation.send_message(
-            SEND_FILE.format(PICTURE_MAX_SIZE, VIDEO_MAX_SIZE, SOUND_MAX_SIZE)
-        )
+        await conversation.send_message(SEND_FILE)
 
         while True:
             response = await conversation.get_response()
@@ -51,14 +50,19 @@ async def attach_file_handler(event, database, user):
                 await conversation.send_message(ATTACH_FILE_CANCELED)
                 return
 
-            # TODO: Check file type and constraints
+            if not response.media:
+                await conversation.send_message(FILE_IS_REQUIRED)
+                continue
 
             break
 
-    file_path = await response.download_media(f"./files/{event.chat_id}")
+    message = await event.client.send_message(
+        FILES_CHANNEL_ID,
+        response
+    )
 
     database.create_attachment(
-        path=file_path, question=question
+        message_id=message.id, question=question, user=user
     )
 
     database.commit()

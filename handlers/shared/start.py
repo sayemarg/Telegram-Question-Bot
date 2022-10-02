@@ -3,7 +3,6 @@ from ..decorators import (
     conversation_protector_decorator, error_handler_decorator
 )
 from ..permissions import is_user_programmer
-from helpers import create_path_if_not_exists
 from messages.shared.start import *
 from telethon import events, Button
 
@@ -95,7 +94,5 @@ async def start_handler(event, database, user):
         database.create_admin(user=user)
 
     database.commit()
-
-    create_path_if_not_exists(f"./files/{chat.id}/")
 
     await event.respond(ACCESS_GRANTED)

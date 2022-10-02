@@ -1,6 +1,6 @@
 from ..decorators import error_handler_decorator, is_user_decorator
 from ..permissions import has_admins_permission
-from helpers import path_exists
+from helpers import FILES_CHANNEL_ID
 from messages.globals.questions import QUESTION_NOT_FOUND
 from messages.shared.show_attachments import *
 from telethon import events, Button
@@ -34,13 +34,17 @@ async def show_attachments_handler(event, database, user):
         return
 
     for attachment in attachments:
-        file_path = attachment.path
+        message = await event.client.get_messages(
+            FILES_CHANNEL_ID,
+            ids=attachment.message_id
+        )
 
-        if not path_exists(file_path):
+        if not message:
+            await event.reply(ATTACHMENT_DOSE_NOT_EXISTS)
             continue
 
         await event.reply(
-            file=file_path,
+            message,
             buttons=Button.inline(
                 DELETE_ATTACHMENT_BUTTON, f"/delete_attachment_{attachment.id}"
             )

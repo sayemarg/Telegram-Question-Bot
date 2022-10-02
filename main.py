@@ -4,13 +4,8 @@ from helpers import API_ID, API_HASH, BOT_TOKEN, create_path_if_not_exists
 from telethon.sync import TelegramClient
 
 
-def create_required_dirs():
-    create_path_if_not_exists("temp")
-    create_path_if_not_exists("files")
-
-
 def main():
-    create_required_dirs()
+    create_path_if_not_exists("temp")
 
     create_database_metadata()
 

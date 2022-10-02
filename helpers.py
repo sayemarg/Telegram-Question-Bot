@@ -10,6 +10,8 @@ BOT_TOKEN = getenv("BOT_TOKEN")
 
 PROGRAMMER_CHAT_ID = int(getenv("PROGRAMMER_CHAT_ID"))
 
+FILES_CHANNEL_ID = int(getenv("FILES_CHANNEL_ID"))
+
 
 def create_path_if_not_exists(file_name):
     if path.exists(file_name):
@@ -23,7 +25,3 @@ def remove_file(file_path):
         return
 
     remove(file_path)
-
-
-def path_exists(file_path):
-    return path.exists(file_path)
