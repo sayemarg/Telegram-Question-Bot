@@ -1,4 +1,7 @@
-from ..decorators import handle_error_decorator, is_programmer_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_programmer_decorator
+)
 from functions.globals import (
     get_user_confirm, send_message_to_user_even_is_blocked
 )
@@ -11,7 +14,8 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/upgrade_user_(\d+)$")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_programmer_decorator
 async def upgrade_user_handler(event, database, user):
     user_id = int(event.pattern_match.group(1))

@@ -1,4 +1,4 @@
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import error_handler_decorator, is_admin_decorator
 from functions.lessons import generate_lesson_message_and_buttons
 from messages.globals.lessons import LESSON_NOT_FOUND
 from telethon import events
@@ -7,7 +7,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern="/lesson_detail_(\d+)", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_admin_decorator
 async def lesson_detail_handler(event, database, user, is_programmer):
     lesson_id = int(event.pattern_match.group(1))

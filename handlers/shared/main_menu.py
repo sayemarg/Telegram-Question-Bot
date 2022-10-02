@@ -1,4 +1,4 @@
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import error_handler_decorator, is_user_decorator
 from ..permissions import has_admins_permission
 from messages.shared.main_menu import *
 from messages.navigation import (
@@ -11,7 +11,7 @@ from telethon import events, Button
 @events.register(
     events.NewMessage(pattern="^/main_menu$", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_user_decorator
 async def main_menu_handler(event, database, user):
     buttons = [

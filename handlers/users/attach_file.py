@@ -2,7 +2,10 @@ from ..constants import (
     CONVERSATION_TIMEOUT, QUESTION_ATTACHMENT_MAX_NUMBER, PICTURE_MAX_SIZE,
     VIDEO_MAX_SIZE, SOUND_MAX_SIZE
 )
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_user_decorator
+)
 from messages.globals.questions import QUESTION_NOT_FOUND
 from messages.users.attach_file import *
 from telethon import events
@@ -11,7 +14,8 @@ from telethon import events
 @events.register(
     events.CallbackQuery(pattern=f"/attach_file_(\d+)")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_user_decorator
 async def attach_file_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

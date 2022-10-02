@@ -1,4 +1,4 @@
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import error_handler_decorator, is_user_decorator
 from ..permissions import has_admins_permission
 from helpers import path_exists
 from messages.globals.questions import QUESTION_NOT_FOUND
@@ -9,7 +9,7 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern=f"/show_attachments_(\d+)")
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_user_decorator
 async def show_attachments_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

@@ -1,5 +1,5 @@
 from ..constants import QUESTIONS_PAGINATION_LENGTH
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import error_handler_decorator, is_admin_decorator
 from functions.globals import create_list_message, generate_pagination_buttons
 from functions.questions import format_question_preview_function
 from messages.admins.lesson_questions import *
@@ -12,7 +12,7 @@ from telethon import events
 @events.register(
     events.CallbackQuery(pattern=f"/lesson_questions_(\d+)_(\d+)")
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_admin_decorator
 async def lesson_questions_handler(event, database, user, is_programmer):
     lesson_id = int(event.pattern_match.group(1))

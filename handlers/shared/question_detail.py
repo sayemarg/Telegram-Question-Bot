@@ -1,4 +1,4 @@
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import error_handler_decorator, is_user_decorator
 from ..permissions import has_admins_permission
 from functions.questions import generate_question_message_and_buttons
 from messages.globals.questions import QUESTION_NOT_FOUND
@@ -8,7 +8,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern="/question_detail_(\d+)", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_user_decorator
 async def question_detail_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

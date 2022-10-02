@@ -22,60 +22,62 @@ async def send_report_to_programmer(bot, message, chat_id):
     remove_file(path)
 
 
-def handle_error_decorator(protect_conversation=True):
-    def decorator(callback):
-        async def inner(event):
-            global USERS_CURRENT_IN_CONVERSATION
+def conversation_protector_decorator(callback):
+    async def inner(event):
+        global USERS_CURRENT_IN_CONVERSATION
 
-            if protect_conversation:
-                if USERS_CURRENT_IN_CONVERSATION.get(event.chat_id):
-                    await event.respond(COMPLETE_CURRENT_CONVERSATION)
-                    return
+        if USERS_CURRENT_IN_CONVERSATION.get(event.chat_id):
+            await event.respond(COMPLETE_CURRENT_CONVERSATION)
+            return
 
-                USERS_CURRENT_IN_CONVERSATION[event.chat_id] = True
+        USERS_CURRENT_IN_CONVERSATION[event.chat_id] = True
 
-            try:
-                database = DatabaseManager()
+        await callback(event)
 
-                user = database.get_user(chat_id=event.chat_id)
+        del USERS_CURRENT_IN_CONVERSATION[event.chat_id]
 
-                await callback(event, database, user)
+    return inner
 
-            except AsyncioTimeoutError:
-                timeout_minutes = CONVERSATION_TIMEOUT // 60
 
-                await event.respond(
-                    CONVERSATION_TIMEOUT_EXCEEDED.format(
-                        timeout_minutes
-                    )
+def error_handler_decorator(callback):
+    async def inner(event):
+        try:
+            database = DatabaseManager()
+
+            user = database.get_user(chat_id=event.chat_id)
+
+            await callback(event, database, user)
+
+        except AsyncioTimeoutError:
+            timeout_minutes = CONVERSATION_TIMEOUT // 60
+
+            await event.respond(
+                CONVERSATION_TIMEOUT_EXCEEDED.format(
+                    timeout_minutes
                 )
+            )
 
-            except:
-                await event.respond(BOT_ERROR_OCCURED)
+        except:
+            await event.respond(BOT_ERROR_OCCURED)
 
-                command = event.pattern_match.string
+            command = event.pattern_match.string
 
-                if isinstance(command, bytes):
-                    command = command.decode()
+            if isinstance(command, bytes):
+                command = command.decode()
 
-                await send_report_to_programmer(
-                    event.client,
-                    ADMIN_ERROR_REPORT.format(
-                        command,
-                        format_exc(),
-                    ),
-                    event.chat_id
-                )
+            await send_report_to_programmer(
+                event.client,
+                ADMIN_ERROR_REPORT.format(
+                    command,
+                    format_exc(),
+                ),
+                event.chat_id
+            )
 
-            finally:
-                database.close()
+        finally:
+            database.close()
 
-            if protect_conversation:
-                del USERS_CURRENT_IN_CONVERSATION[event.chat_id]
-
-        return inner
-
-    return decorator
+    return inner
 
 
 def is_user_decorator(callback):

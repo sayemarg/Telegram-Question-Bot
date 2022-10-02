@@ -1,4 +1,7 @@
-from ..decorators import handle_error_decorator, is_programmer_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_programmer_decorator
+)
 from functions.globals import get_user_confirm
 from messages.admins.delete_lesson import *
 from messages.globals.lessons import LESSON_NOT_FOUND
@@ -8,7 +11,8 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/delete_lesson_(\d+)$")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_programmer_decorator
 async def delete_lesson_handler(event, database, user):
     lesson_id = int(event.pattern_match.group(1))

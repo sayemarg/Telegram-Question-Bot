@@ -1,5 +1,8 @@
 from ..constants import ANSWER_QUESTION_MAX_NUMBER
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_admin_decorator
+)
 from database import QuestionStatus
 from functions.globals import send_message_to_user_even_is_blocked
 from functions.questions import (
@@ -13,7 +16,8 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern=f"/answer_question_(\d+)")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_admin_decorator
 async def answer_question_handler(event, database, user, is_programmer):
     question_id = int(event.pattern_match.group(1))

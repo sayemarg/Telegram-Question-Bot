@@ -1,5 +1,5 @@
 from ..constants import LESSONS_PAGINATION_LENGTH
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import error_handler_decorator, is_admin_decorator
 from functions.globals import create_list_message, generate_pagination_buttons
 from functions.lessons import format_lesson_preview_function
 from messages.admins.lessons_list import *
@@ -14,7 +14,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern=f"^{LESSONS_LIST_KEY}$", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_admin_decorator
 async def lessons_list_handler(event, database, user, is_programmer):
     lessons_count = database.get_lessons_count()

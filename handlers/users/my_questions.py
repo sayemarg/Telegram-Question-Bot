@@ -1,5 +1,5 @@
 from ..constants import QUESTIONS_PAGINATION_LENGTH
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import error_handler_decorator, is_user_decorator
 from functions.globals import create_list_message, generate_pagination_buttons
 from functions.questions import format_question_preview_function
 from messages.globals.questions import QUESTION_TEXT
@@ -15,7 +15,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern=f"^{MY_QUESTIONS_LIST_KEY}$", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_user_decorator
 async def my_questions_list_handler(event, database, user):
     questions_count = database.get_questions_count(user=user)

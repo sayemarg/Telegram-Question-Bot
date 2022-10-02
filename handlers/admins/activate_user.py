@@ -1,4 +1,4 @@
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import error_handler_decorator, is_admin_decorator
 from functions.globals import send_message_to_user_even_is_blocked
 from functions.users import update_user_message
 from messages.admins.activate_user import *
@@ -11,7 +11,7 @@ from telethon import events
 @events.register(
     events.CallbackQuery(pattern="^/activate_user_(\d+)$")
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_admin_decorator
 async def activate_user_handler(event, database, user, is_programmer):
     user_id = int(event.pattern_match.group(1))

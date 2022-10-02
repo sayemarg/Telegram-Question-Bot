@@ -1,7 +1,10 @@
 from ..constants import (
     CONVERSATION_TIMEOUT, QUESTION_TITLE_MAX_LENGTH, QUESTION_TEXT_MAX_LENGTH
 )
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_user_decorator
+)
 from ..permissions import has_admins_permission
 from functions.globals import send_message_to_user_even_is_blocked
 from functions.questions import generate_question_message_and_buttons
@@ -14,7 +17,8 @@ from telethon import events, Button
 @events.register(
     events.NewMessage(pattern=f"^{NEW_QUESTION_KEY}$", incoming=True)
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_user_decorator
 async def add_question_handler(event, databse, user):
     lessons = databse.get_lessons_list()

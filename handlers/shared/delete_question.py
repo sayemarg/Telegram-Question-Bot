@@ -1,4 +1,7 @@
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_user_decorator
+)
 from ..permissions import has_admins_permission
 from database import QuestionStatus
 from functions.globals import (
@@ -14,7 +17,8 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern=f"/delete_question_(\d+)")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_user_decorator
 async def delete_question_handler(event, database, user):
     question_id = int(event.pattern_match.group(1))

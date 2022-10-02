@@ -1,5 +1,8 @@
 from ..constants import DOWNGRADE_REASON_MAX_LENGTH
-from ..decorators import handle_error_decorator, is_programmer_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_programmer_decorator
+)
 from functions.globals import (
     get_reason_from_user, send_message_to_user_even_is_blocked
 )
@@ -12,7 +15,8 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/downgrade_admin_(\d+)$")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_programmer_decorator
 async def downgrade_admin_handler(event, database, user):
     user_id = int(event.pattern_match.group(1))

@@ -1,5 +1,8 @@
 from ..constants import DELETE_ATTACHMENT_REASON_MAX_LENGTH
-from ..decorators import handle_error_decorator, is_user_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_user_decorator
+)
 from ..permissions import has_admins_permission
 from functions.globals import (
     get_user_confirm, get_reason_from_user, send_message_to_user_even_is_blocked
@@ -69,7 +72,8 @@ async def delete_attachment_by_user(event, database, attachment):
 @events.register(
     events.CallbackQuery(pattern=f"/delete_attachment_(\d+)")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_user_decorator
 async def delete_attachment_handler(event, database, user):
     attachment_id = int(event.pattern_match.group(1))

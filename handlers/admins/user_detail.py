@@ -1,4 +1,4 @@
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import error_handler_decorator, is_admin_decorator
 from functions.users import generate_user_message_and_buttons
 from messages.admins.user_detail import IS_SELF_USER
 from messages.globals.users import USER_NOT_FOUND
@@ -8,7 +8,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern="/user_detail_(\d+)", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_admin_decorator
 async def user_detail_handler(event, database, user, is_programmer):
     user_id = int(event.pattern_match.group(1))

@@ -1,5 +1,5 @@
 from ..constants import USERS_PAGINATION_LENGTH
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import error_handler_decorator, is_admin_decorator
 from functions.globals import create_list_message, generate_pagination_buttons
 from functions.users import format_user_title, format_user_phone
 from messages.admins.users_list import *
@@ -14,7 +14,7 @@ from telethon import events
 @events.register(
     events.NewMessage(pattern=f"^{USERS_LIST_KEY}$", incoming=True)
 )
-@handle_error_decorator(protect_conversation=False)
+@error_handler_decorator
 @is_admin_decorator
 async def users_list_handler(event, database, user, is_programmer):
     users_count = database.get_users_count()

@@ -1,5 +1,7 @@
 from ..constants import CONVERSATION_TIMEOUT, FULL_NAME_MAX_LENGTH
-from ..decorators import handle_error_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator
+)
 from ..permissions import is_user_programmer
 from helpers import create_path_if_not_exists
 from messages.shared.start import *
@@ -9,7 +11,8 @@ from telethon import events, Button
 @events.register(
     events.NewMessage(pattern="^/start$", incoming=True)
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 async def start_handler(event, database, user):
     chat = await event.get_chat()
 

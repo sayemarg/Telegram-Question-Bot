@@ -1,5 +1,8 @@
 from ..constants import ACCOUNT_DEACTIVATE_REASON_MAX_LENGTH
-from ..decorators import handle_error_decorator, is_admin_decorator
+from ..decorators import (
+    conversation_protector_decorator, error_handler_decorator,
+    is_admin_decorator
+)
 from functions.globals import (
     get_reason_from_user, send_message_to_user_even_is_blocked
 )
@@ -14,7 +17,8 @@ from telethon import events, Button
 @events.register(
     events.CallbackQuery(pattern="^/deactivate_user_(\d+)$")
 )
-@handle_error_decorator()
+@conversation_protector_decorator
+@error_handler_decorator
 @is_admin_decorator
 async def deactivate_user_handler(event, database, user, is_programmer):
     user_id = int(event.pattern_match.group(1))
