@@ -1,5 +1,7 @@
 from ..decorators import handle_error_decorator, is_programmer_decorator
-from functions.globals import get_user_confirm
+from functions.globals import (
+    get_user_confirm, send_message_to_user_even_is_blocked
+)
 from functions.users import update_user_message
 from messages.admins.upgrade_user import *
 from messages.globals.users import USER_NOT_FOUND
@@ -43,7 +45,8 @@ async def upgrade_user_handler(event, database, user):
 
     database.commit()
 
-    await event.client.send_message(
+    await send_message_to_user_even_is_blocked(
+        event.client,
         target_user.chat_id,
         UPGRADED_TO_ADMIN_MESSAGE
     )

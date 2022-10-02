@@ -3,6 +3,7 @@ from math import ceil
 from messages.globals import CHOOSE_FROM_BUTTONS, SKIP_BUTTON, REASON_LENGTH_LIMIT
 from messages.pagination import *
 from telethon import Button
+from telethon.errors import UserIsBlockedError
 
 
 async def get_user_confirm(
@@ -156,3 +157,13 @@ def generate_pagination_buttons(command_prefix, page_length, page_number, list_l
         buttons.append(first_last_page_buttons)
 
     return (buttons or None)
+
+
+async def send_message_to_user_even_is_blocked(bot, entity, message, **kwargs):
+    try:
+        message = await bot.send_message(entity, message, **kwargs)
+
+        return message
+
+    except UserIsBlockedError:
+        return

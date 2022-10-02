@@ -1,6 +1,7 @@
 from ..constants import ANSWER_QUESTION_MAX_NUMBER
 from ..decorators import handle_error_decorator, is_admin_decorator
 from database import QuestionStatus
+from functions.globals import send_message_to_user_even_is_blocked
 from functions.questions import (
     format_question_lesson_name, update_question_message
 )
@@ -43,22 +44,34 @@ async def answer_question_handler(event, database, user, is_programmer):
 
             if response.raw_text == "/cancel":
                 await conversation.send_message(
-                    ANSWER_QUESTION_CANCELED, buttons=Button.clear()
+                    ANSWER_QUESTION_CANCELED,
+                    buttons=Button.clear()
                 )
                 return
 
             if response.raw_text == SEND_ANSWER_DONE:
+                if not answer_messages:
+                    await event.respond(
+                        EMPTY_ANSWERS_LIST,
+                        buttons=Button.clear()
+                    )
+                    return
+
                 break
 
             answer_messages.append(response)
 
             if ANSWER_QUESTION_MAX_NUMBER <= len(answer_messages):
-                await conversation.send_message(ANSWER_NUMBERS_LIMIT)
+                await conversation.send_message(
+                    ANSWER_NUMBERS_LIMIT,
+                    buttons=Button.clear()
+                )
                 break
 
     user_chat_id = question.user.chat_id
 
-    await event.client.send_message(
+    message = await send_message_to_user_even_is_blocked(
+        event.client,
         user_chat_id,
         YOUR_QUESTION_ANSWERS.format(
             question.id,
@@ -67,8 +80,19 @@ async def answer_question_handler(event, database, user, is_programmer):
         )
     )
 
+    if message is None:
+        await event.respond(
+            USER_BLOCKED_BOT,
+            buttons=Button.clear()
+        )
+        return
+
     for message in answer_messages:
-        await event.client.send_message(user_chat_id, message)
+        await send_message_to_user_even_is_blocked(
+            event.client,
+            user_chat_id,
+            message
+        )
 
     if question.status == QuestionStatus.WAIT_FOR_ANSWER:
         question.status = QuestionStatus.ANSWERED
@@ -78,5 +102,6 @@ async def answer_question_handler(event, database, user, is_programmer):
         await update_question_message(event, question, user)
 
     await event.respond(
-        SEND_ANSWER_SUCCESSFUL, buttons=Button.clear()
+        SEND_ANSWER_SUCCESSFUL,
+        buttons=Button.clear()
     )

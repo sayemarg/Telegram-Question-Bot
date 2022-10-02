@@ -1,7 +1,9 @@
 from ..constants import DELETE_ATTACHMENT_REASON_MAX_LENGTH
 from ..decorators import handle_error_decorator, is_user_decorator
 from ..permissions import has_admins_permission
-from functions.globals import get_user_confirm, get_reason_from_user
+from functions.globals import (
+    get_user_confirm, get_reason_from_user, send_message_to_user_even_is_blocked
+)
 from helpers import remove_file
 from messages.shared.delete_attachment import *
 from telethon import events, Button
@@ -25,7 +27,8 @@ async def delete_attachment_by_admin(event, database, attachment):
 
     await event.delete()
 
-    await event.client.send_message(
+    await send_message_to_user_even_is_blocked(
+        event.client,
         attachment.question.user.chat_id,
         YOUR_ATTACHMENT_DELETED.format(
             attachment.question.title,

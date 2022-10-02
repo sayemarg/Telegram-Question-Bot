@@ -1,4 +1,5 @@
 from ..decorators import handle_error_decorator, is_admin_decorator
+from functions.globals import send_message_to_user_even_is_blocked
 from functions.users import update_user_message
 from messages.admins.activate_user import *
 from messages.globals.users import (
@@ -40,7 +41,8 @@ async def activate_user_handler(event, database, user, is_programmer):
 
     database.commit()
 
-    await event.client.send_message(
+    await send_message_to_user_even_is_blocked(
+        event.client,
         target_user.chat_id,
         ACCOUNT_ACTIVATED_MESSAGE
     )

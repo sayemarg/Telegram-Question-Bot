@@ -1,7 +1,9 @@
 from ..decorators import handle_error_decorator, is_user_decorator
 from ..permissions import has_admins_permission
 from database import QuestionStatus
-from functions.globals import get_user_confirm
+from functions.globals import (
+    get_user_confirm, send_message_to_user_even_is_blocked
+)
 from functions.questions import format_question_lesson_name
 from helpers import remove_file
 from messages.globals.questions import QUESTION_NOT_FOUND
@@ -57,7 +59,8 @@ async def delete_question_handler(event, database, user):
     await event.delete()
 
     if not is_user_question:
-        await event.client.send_message(
+        await send_message_to_user_even_is_blocked(
+            event.client,
             question.user.chat_id,
             YOUR_QUESTION_DELETED.format(
                 question.title,

@@ -1,6 +1,8 @@
 from ..constants import DOWNGRADE_REASON_MAX_LENGTH
 from ..decorators import handle_error_decorator, is_programmer_decorator
-from functions.globals import get_reason_from_user
+from functions.globals import (
+    get_reason_from_user, send_message_to_user_even_is_blocked
+)
 from functions.users import update_user_message
 from messages.admins.downgrade_admin import *
 from messages.globals.users import USER_NOT_FOUND
@@ -42,7 +44,8 @@ async def downgrade_admin_handler(event, database, user):
 
     database.commit()
 
-    await event.client.send_message(
+    await send_message_to_user_even_is_blocked(
+        event.client,
         target_user.chat_id,
         DOWNGRADED_TO_USER_MESSAGE.format(provided_reason),
         buttons=Button.clear()

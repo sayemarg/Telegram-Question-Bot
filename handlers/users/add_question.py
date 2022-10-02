@@ -3,6 +3,7 @@ from ..constants import (
 )
 from ..decorators import handle_error_decorator, is_user_decorator
 from ..permissions import has_admins_permission
+from functions.globals import send_message_to_user_even_is_blocked
 from functions.questions import generate_question_message_and_buttons
 from messages.navigation import NEW_QUESTION_KEY
 from messages.users.add_question import *
@@ -131,7 +132,8 @@ async def add_question_handler(event, databse, user):
     admins_message = NEW_QUESTION_SUBMITTED.format(question.id)
 
     for admin in admins_list:
-        await event.client.send_message(
+        await send_message_to_user_even_is_blocked(
+            event.client,
             admin.user.chat_id,
             admins_message
         )
